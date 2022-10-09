@@ -8,10 +8,10 @@ OVMF=$VMDIR/firmware
 
 qemu-system-x86_64 \
     -enable-kvm \
-    -m 2G \
+    -m 8G \
     -machine q35,accel=kvm \
-    -smp 4,cores=2 \
-    -cpu Penryn,vendor=GenuineIntel,kvm=on,+sse3,+sse4.2,+aes,+xsave,+avx,+xsaveopt,+xsavec,+xgetbv1,+avx2,+bmi2,+smep,+bmi1,+fma,+movbe,+invtsc \
+    -smp 4,cores=4 \
+    -cpu host,vendor=GenuineIntel,kvm=on,+sse3,+sse4.2,+aes,+xsave,+avx,+xsaveopt,+xsavec,+xgetbv1,+avx2,+bmi2,+smep,+bmi1,+fma,+movbe,+invtsc \
     -device isa-applesmc,osk="$OSK" \
     -smbios type=2 \
     -drive if=pflash,format=raw,readonly,file="$OVMF/OVMF_CODE.fd" \
@@ -26,3 +26,5 @@ qemu-system-x86_64 \
     -device ide-hd,bus=sata.2,drive=ESP \
     -drive id=InstallMedia,format=raw,if=none,file=BaseSystem.img \
     -device ide-hd,bus=sata.3,drive=InstallMedia \
+	-drive id=SystemDisk,if=none,file=Catalina.qcow2 \
+    -device ide-hd,bus=sata.4,drive=SystemDisk \
